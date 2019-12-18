@@ -29,6 +29,9 @@
 		
 		<!-- Bean Validation / Hibernate Validator -->
 		<hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
+		
+		<!-- Thymeleaf - Layout Dialect -->
+		<thymeleaf-layout-dialect.version>2.0.0</thymeleaf-layout-dialect.version>
 	</properties>
 
 	<build>
@@ -94,7 +97,26 @@
             <version>${hibernate-validator.version}</version>
             <scope>compile</scope>
         </dependency>
+        
+        <!-- Thymeleaf - Layout Dialect -->
+		<dependency>
+    		<groupId>nz.net.ultraq.thymeleaf</groupId>
+    		<artifactId>thymeleaf-layout-dialect</artifactId>
+    		<version>${thymeleaf-layout-dialect.version}</version>
+		</dependency>
+		
 		
 	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+    		<name>Sonatype Nexus Snapshots</name>
+    		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    		<snapshots>
+      			<enabled>true</enabled>
+    		</snapshots>
+		</repository>
+	</repositories>
 
 </project>
