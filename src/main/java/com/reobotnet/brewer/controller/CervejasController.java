@@ -1,5 +1,7 @@
 package com.reobotnet.brewer.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +15,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.repository.Cervejas;
 
-
-
 @Controller
 public class CervejasController {
+	
 	@Autowired
 	private Cervejas cervejas;
 	
 	@RequestMapping("/cervejas/novo")
 	public String novo(Cerveja cerveja) {
-		cervejas.findAll(); //Teste, apagar dps...
+		Optional<Cerveja> cervejaOptional = cervejas.findBySkuIgnoreCase("AAA1111"); //Teste apagar depois
+		System.out.println(cervejaOptional.isPresent());
 		return "cerveja/CadastroCerveja";
 	}
 	
