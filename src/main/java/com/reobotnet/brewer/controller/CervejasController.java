@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reobotnet.brewer.model.Cerveja;
+import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
 import com.reobotnet.brewer.repository.Cervejas;
 import com.reobotnet.brewer.repository.Estilos;
@@ -30,6 +31,7 @@ public class CervejasController {
 		ModelAndView mv = new ModelAndView("cerveja/CadastroCerveja");
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estilos.findAll());
+		mv.addObject("origens", Origem.values());
 		return mv;
 	}
 	
