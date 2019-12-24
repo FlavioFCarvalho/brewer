@@ -49,7 +49,7 @@
 					<div class="bw-field-action">
 						<select id="estilo" class="form-control">
 							<option value="">Selecione o estilo</option>
-							<option value="1">Pale lager</option>
+							<option th:each="estilo : ${estilos}" th:value="${estilo.codigo}" th:text="${estilo.nome}">Pale lager</option>
 						</select>
 						
 						<div class="bw-field-action__icon">

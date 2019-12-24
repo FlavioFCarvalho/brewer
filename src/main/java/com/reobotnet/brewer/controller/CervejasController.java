@@ -12,9 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reobotnet.brewer.model.Cerveja;
-import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
 import com.reobotnet.brewer.repository.Cervejas;
+import com.reobotnet.brewer.repository.Estilos;
 
 @Controller
 public class CervejasController {
@@ -22,10 +22,14 @@ public class CervejasController {
 	@Autowired
 	private Cervejas cervejas;
 	
+	@Autowired
+	private Estilos estilos;
+	
 	@RequestMapping("/cervejas/novo")
 	public ModelAndView novo(Cerveja cerveja) {
 		ModelAndView mv = new ModelAndView("cerveja/CadastroCerveja");
 		mv.addObject("sabores", Sabor.values());
+		mv.addObject("estilos", estilos.findAll());
 		return mv;
 	}
 	
