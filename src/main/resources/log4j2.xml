@@ -10,7 +10,8 @@
 	<Loggers>
 		<Logger name="com.reobotnet.brewer.controller" level="error"/>
 	
-		<Root level="info">
+	    <Logger name="org.hibernate.SQL" level="debug"/>
+		<Root level="error">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>
