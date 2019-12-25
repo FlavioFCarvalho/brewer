@@ -6,15 +6,14 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import com.reobotnet.brewer.config.JPAConfig;
+import com.reobotnet.brewer.config.ServiceConfig;
 import com.reobotnet.brewer.config.WebConfig;
-
-
 
 public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { JPAConfig.class };
+		return new Class<?>[] { JPAConfig.class, ServiceConfig.class };
 	}
 
 	@Override
@@ -30,12 +29,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Filter[] getServletFilters() {
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-		characterEncodingFilter.setEncoding("UTF-8");
-		characterEncodingFilter.setForceEncoding(true);
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
 		
-		return new Filter[] { characterEncodingFilter };
+        return new Filter[] { characterEncodingFilter };
 	}
-
-
 
 }
