@@ -18,6 +18,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
+import com.reobotnet.brewer.validation.SKU;
 
 @Entity
 @Table(name = "cerveja")
@@ -27,6 +28,7 @@ public class Cerveja {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
 
+	@SKU
 	@NotBlank(message = "SKU é obrigatório")
 	private String sku;
 
