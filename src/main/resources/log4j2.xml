@@ -8,7 +8,7 @@
 	</Appenders>
 	
 	<Loggers>
-		<Logger name="com.reobotnet.brewer.controller" level="error"/>
+		<Logger name="com.reobotnet.brewer" level="debug"/>
 	
 	    <Logger name="org.hibernate.SQL" level="debug"/>
 		<Root level="error">
