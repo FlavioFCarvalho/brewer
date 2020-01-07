@@ -1,6 +1,7 @@
 package com.reobotnet.brewer.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -76,10 +77,21 @@ public class Cerveja {
 	@ManyToOne
 	@JoinColumn(name = "codigo_estilo")
 	private Estilo estilo;
+
+	@NotNull(message = "A foto é obrigatória")
+	private String foto;
+
+	@Column(name = "content_type")
+	private String contentType;
 	
-	@PrePersist @PreUpdate
+	
+   private Date dataCadastro;
+	
+	@PrePersist
+	@PreUpdate
 	private void prePersistUpdate() {
 		sku = sku.toUpperCase();
+		dataCadastro = new Date();
 	}
 
 	public String getSku() {
@@ -168,6 +180,30 @@ public class Cerveja {
 
 	public void setEstilo(Estilo estilo) {
 		this.estilo = estilo;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+		
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 	@Override
