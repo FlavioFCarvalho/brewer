@@ -17,6 +17,7 @@ import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
 import com.reobotnet.brewer.repository.Cervejas;
 import com.reobotnet.brewer.repository.Estilos;
+import com.reobotnet.brewer.repository.filter.CervejaFilter;
 import com.reobotnet.brewer.service.CadastroCervejaService;
 
 @Controller
@@ -53,13 +54,13 @@ public class CervejasController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar() {
+	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
 		mv.addObject("estilos", estilos.findAll());
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("origens", Origem.values());
 		
-		mv.addObject("cervejas", cervejas.findAll());
+		mv.addObject("cervejas", cervejas.filtrar(cervejaFilter));
 		return mv;
 	}
 	
