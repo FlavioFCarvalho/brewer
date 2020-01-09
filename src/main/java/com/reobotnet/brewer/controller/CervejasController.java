@@ -1,8 +1,10 @@
 package com.reobotnet.brewer.controller;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import com.reobotnet.brewer.repository.Cervejas;
 import com.reobotnet.brewer.repository.Estilos;
 import com.reobotnet.brewer.repository.filter.CervejaFilter;
 import com.reobotnet.brewer.service.CadastroCervejaService;
+
 @Controller
 @RequestMapping("/cervejas")
 public class CervejasController {
@@ -54,8 +57,6 @@ public class CervejasController {
 		return new ModelAndView("redirect:/cervejas/novo");
 	}
 	
-	
-	
 	@GetMapping
 	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result, @PageableDefault(size = 2) Pageable pageable) {
 		ModelAndView mv = new ModelAndView("cerveja/PesquisaCervejas");
@@ -63,7 +64,8 @@ public class CervejasController {
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("origens", Origem.values());
 		
-		mv.addObject("cervejas", cervejas.filtrar(cervejaFilter, pageable));
+		Page<Cerveja> pagina = cervejas.filtrar(cervejaFilter, pageable);
+		mv.addObject("pagina", pagina);
 		return mv;
 	}
 	
