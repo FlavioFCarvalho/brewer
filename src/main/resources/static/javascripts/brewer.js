@@ -40,27 +40,17 @@ Brewer.MaskPhoneNumber = (function() {
 	
 }());
 
-Brewer.MaskCepNumber = (function() {
+Brewer.MaskCep = (function() {
 	
-	function MaskCepNumber() {
-		this.inputCepNumber = $('.js-cep-number');
+	function MaskCep() {
+		this.inputCep = $('.js-cep-number');
 	}
 	
-	MaskCepNumber.prototype.enable = function() {
-		var maskBehavior = function (val) {
-		  return val.replace(/\D/g, '').length === 8 ? '00000-000' : '00000-000';
-		};
-		
-		var options = {
-		  onKeyPress: function(val, e, field, options) {
-		      field.mask(maskBehavior.apply({}, arguments), options);
-		    }
-		};
-		
-		this.inputCepNumber.mask(maskBehavior, options);
+	MaskCep.prototype.enable = function() {
+		this.inputCep.mask('00.000-000');
 	}
 	
-	return MaskCepNumber;
+	return MaskCep;
 	
 }());
 
@@ -71,7 +61,7 @@ $(function() {
 	var maskPhoneNumber = new Brewer.MaskPhoneNumber();
 	maskPhoneNumber.enable();
 	
-	var maskCepNumber = new Brewer.MaskCepNumber();
-	maskCepNumber.enable();
+	var maskCep = new Brewer.MaskCep();
+	maskCep.enable();
 	
 });
