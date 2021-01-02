@@ -199,7 +199,7 @@ public class Cerveja {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-		
+	
 	public Date getDataCadastro() {
 		return dataCadastro;
 	}
