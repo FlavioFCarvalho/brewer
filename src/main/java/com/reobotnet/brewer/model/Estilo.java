@@ -1,6 +1,7 @@
 package com.reobotnet.brewer.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -26,9 +29,17 @@ public class Estilo implements Serializable {
 	@NotBlank(message = "O nome é obrigatório")
 	@Size(max = 100, message = "O tamanho da descrição deve estar entre 1 e 100")
 	private String nome;
-	
+
 	@OneToMany(mappedBy = "estilo")
 	private List<Cerveja> cervejas;
+
+	private Date dataCadastro;
+
+	@PrePersist
+	@PreUpdate
+	private void prePersistUpdate() {
+		dataCadastro = new Date();
+	}
 
 	public Long getCodigo() {
 		return codigo;
@@ -44,6 +55,14 @@ public class Estilo implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Date getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(Date dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 	@Override
