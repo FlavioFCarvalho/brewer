@@ -14,6 +14,7 @@ import com.reobotnet.brewer.model.Cliente;
 import com.reobotnet.brewer.model.TipoPessoa;
 import com.reobotnet.brewer.repository.Estados;
 import com.reobotnet.brewer.service.CadastroClienteService;
+import com.reobotnet.brewer.service.exception.CpfCnpjClienteJaCadastradoException;
 
 
 @Controller
@@ -40,7 +41,13 @@ public class ClientesController {
 			return novo(cliente);
 		}
 		
-		cadastroClienteService.salvar(cliente);
+		try {
+			cadastroClienteService.salvar(cliente);
+		} catch (CpfCnpjClienteJaCadastradoException e) {
+			result.rejectValue("cpfOuCnpj", e.getMessage(), e.getMessage());
+			return novo(cliente);
+		}
+		
 		attributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
 		return new ModelAndView("redirect:/clientes/novo");
 	}
