@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -19,10 +21,9 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
-import com.reobotnet.brewer.model.validation.ClienteGroupSequenceProvider;
 import com.reobotnet.brewer.model.validation.group.CnpjGroup;
 import com.reobotnet.brewer.model.validation.group.CpfGroup;
-
+import com.reobotnet.brewer.model.validation.ClienteGroupSequenceProvider;
 
 
 @Entity
@@ -57,6 +58,11 @@ public class Cliente implements Serializable {
 
 	@Embedded
 	private Endereco endereco;
+	
+	@PrePersist @PreUpdate
+	private void prePersistPreUpdate() {
+		this.cpfOuCnpj = this.cpfOuCnpj.replaceAll("\\.|-|/", "");
+	}
 
 	public Long getCodigo() {
 		return codigo;

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reobotnet.brewer.model.Cliente;
 import com.reobotnet.brewer.model.TipoPessoa;
 import com.reobotnet.brewer.repository.Estados;
+import com.reobotnet.brewer.service.CadastroClienteService;
 
 
 @Controller
@@ -21,6 +22,9 @@ public class ClientesController {
 
 	@Autowired
 	private Estados estados;
+	
+	@Autowired
+	private CadastroClienteService cadastroClienteService;
 	
 	@RequestMapping("/novo")
 	public ModelAndView novo(Cliente cliente) {
@@ -36,7 +40,7 @@ public class ClientesController {
 			return novo(cliente);
 		}
 		
-		// TODO: Salvar e adicionar mensagem
+		cadastroClienteService.salvar(cliente);
 		attributes.addFlashAttribute("mensagem", "Cliente salvo com sucesso!");
 		return new ModelAndView("redirect:/clientes/novo");
 	}
