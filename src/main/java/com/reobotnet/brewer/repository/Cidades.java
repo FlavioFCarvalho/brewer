@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.reobotnet.brewer.model.Cidade;
 import com.reobotnet.brewer.model.Estado;
+import com.reobotnet.brewer.repository.helper.cidade.CidadesQueries;
 
-public interface Cidades extends JpaRepository<Cidade, Long> {
+public interface Cidades extends JpaRepository<Cidade, Long>, CidadesQueries {
 
 	public List<Cidade> findByEstadoCodigo(Long codigoEstado);
 
