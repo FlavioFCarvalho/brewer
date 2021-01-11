@@ -2,8 +2,12 @@ package com.reobotnet.brewer.config;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.BeansException;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
@@ -26,12 +30,13 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
-import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.reobotnet.brewer.controller.CervejasController;
 import com.reobotnet.brewer.controller.converter.CidadeConverter;
 import com.reobotnet.brewer.controller.converter.EstadoConverter;
 import com.reobotnet.brewer.controller.converter.EstiloConverter;
 import com.reobotnet.brewer.thymeleaf.BrewerDialect;
+import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
+import com.google.common.cache.CacheBuilder;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -39,6 +44,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @ComponentScan(basePackageClasses = { CervejasController.class })
 @EnableWebMvc
 @EnableSpringDataWebSupport
+@EnableCaching
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -96,12 +102,22 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		conversionService.addFormatterForFieldType(Integer.class, integerFormatter);
 		
 		return conversionService;
-	
 	}
 	
 	@Bean
 	public LocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
 	}
-
+	
+	@Bean
+	public CacheManager cacheManager() {
+		CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder()
+				.maximumSize(3)
+				.expireAfterAccess(20, TimeUnit.SECONDS);
+		
+		GuavaCacheManager cacheManager = new GuavaCacheManager();
+		cacheManager.setCacheBuilder(cacheBuilder);
+		return cacheManager;
+	}
+	
 }
