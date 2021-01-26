@@ -1,5 +1,6 @@
 package com.reobotnet.brewer.controller;
 
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.reobotnet.brewer.model.Usuario;
 import com.reobotnet.brewer.repository.Grupos;
 import com.reobotnet.brewer.service.CadastroUsuarioService;
 import com.reobotnet.brewer.service.exception.EmailUsuarioJaCadastradoException;
+import com.reobotnet.brewer.service.exception.SenhaObrigatoriaUsuarioException;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -42,6 +44,9 @@ public class UsuariosController {
 			cadastroUsuarioService.salvar(usuario);
 		} catch (EmailUsuarioJaCadastradoException e) {
 			result.rejectValue("email", e.getMessage(), e.getMessage());
+			return novo(usuario);
+		} catch (SenhaObrigatoriaUsuarioException e) {
+			result.rejectValue("senha", e.getMessage(), e.getMessage());
 			return novo(usuario);
 		}
 		
