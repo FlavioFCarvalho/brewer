@@ -27,13 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring()
-			.antMatchers("/layout/**")
-			.antMatchers("/images/**");
-	}
-	
-	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
@@ -44,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin()
 				.loginPage("/login")
 				.permitAll()
+				.and()
+			.exceptionHandling()
+				.accessDeniedPage("/403")
 				.and()
 			.csrf().disable();
 	}
