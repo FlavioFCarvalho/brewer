@@ -22,6 +22,7 @@ import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reobotnet.brewer.model.validation.ClienteGroupSequenceProvider;
 import com.reobotnet.brewer.model.validation.group.CnpjGroup;
 import com.reobotnet.brewer.model.validation.group.CpfGroup;
@@ -56,6 +57,7 @@ public class Cliente implements Serializable {
 	@Email(message = "E-mail inválido")
 	private String email;
 
+	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	
