@@ -1,6 +1,8 @@
 package com.reobotnet.brewer.controller;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -13,10 +15,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reobotnet.brewer.controller.page.PageWrapper;
+import com.reobotnet.brewer.dto.CervejaDTO;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
@@ -24,6 +28,8 @@ import com.reobotnet.brewer.repository.Cervejas;
 import com.reobotnet.brewer.repository.Estilos;
 import com.reobotnet.brewer.repository.filter.CervejaFilter;
 import com.reobotnet.brewer.service.CadastroCervejaService;
+
+
 
 @Controller
 @RequestMapping("/cervejas")
@@ -50,7 +56,6 @@ public class CervejasController {
 	@RequestMapping(value = "/novo", method = RequestMethod.POST)
 	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, Model model, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
-			//throw new RuntimeException();
 			return novo(cerveja);
 		}
 		
@@ -71,6 +76,11 @@ public class CervejasController {
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
+	}
+	
+	@GetMapping("/filtro")
+	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome) {
+		return cervejas.porSkuOuNome(skuOuNome);
 	}
 	
 }
