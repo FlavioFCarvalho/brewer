@@ -77,7 +77,10 @@ public class CervejasController {
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
-	
+	/*
+	End point para realizar consulta
+	http://localhost:8080/brewer/cervejas/filtro?skuOuNome=
+	*/
 	@GetMapping("/filtro")
 	public @ResponseBody List<CervejaDTO> pesquisar(String skuOuNome) {
 		return cervejas.porSkuOuNome(skuOuNome);
