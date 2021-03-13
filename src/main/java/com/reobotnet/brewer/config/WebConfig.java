@@ -40,6 +40,7 @@ import com.reobotnet.brewer.controller.converter.CidadeConverter;
 import com.reobotnet.brewer.controller.converter.EstadoConverter;
 import com.reobotnet.brewer.controller.converter.EstiloConverter;
 import com.reobotnet.brewer.controller.converter.GrupoConverter;
+import com.reobotnet.brewer.session.TabelaItensVenda;
 import com.reobotnet.brewer.thymeleaf.BrewerDialect;
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import com.google.common.cache.CacheBuilder;
@@ -47,7 +48,7 @@ import com.google.common.cache.CacheBuilder;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses = { CervejasController.class })
+@ComponentScan(basePackageClasses = { CervejasController.class , TabelaItensVenda.class})
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching

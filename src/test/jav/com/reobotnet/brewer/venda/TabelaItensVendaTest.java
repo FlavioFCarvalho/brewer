@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.reobotnet.brewer.model.Cerveja;
+import com.reobotnet.brewer.session.TabelaItensVenda;
 
 public class TabelaItensVendaTest {
 
