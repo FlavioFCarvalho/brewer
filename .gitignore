@@ -1,27 +1,11 @@
-/target/
-!.mvn/wrapper/maven-wrapper.jar
-
-.metadata/.*
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
+.DS_Store
+Servers/*
+.metadata
 .settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/build/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+.classpath
+.project
+target/
+bin/
+rebel.xml
+.mvn*
+mvnw*
