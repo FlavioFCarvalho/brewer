@@ -43,13 +43,13 @@ import com.reobotnet.brewer.controller.converter.CidadeConverter;
 import com.reobotnet.brewer.controller.converter.EstadoConverter;
 import com.reobotnet.brewer.controller.converter.EstiloConverter;
 import com.reobotnet.brewer.controller.converter.GrupoConverter;
-import com.reobotnet.brewer.session.TabelaItensVenda;
+import com.reobotnet.brewer.session.TabelasItensSession;
 import com.reobotnet.brewer.thymeleaf.BrewerDialect;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
-@ComponentScan(basePackageClasses = { CervejasController.class , TabelaItensVenda.class})
+@ComponentScan(basePackageClasses = { CervejasController.class, TabelasItensSession.class })
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching

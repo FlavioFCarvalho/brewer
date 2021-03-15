@@ -1,4 +1,4 @@
-package com.reobotnet.brewer.venda;
+package com.reobotnet.brewer.session;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.session.TabelaItensVenda;
+import com.reobotnet.brewer.model.Cerveja;
 
 public class TabelaItensVendaTest {
 
@@ -16,7 +16,7 @@ public class TabelaItensVendaTest {
 	
 	@Before
 	public void setUp() {
-		this.tabelaItensVenda = new TabelaItensVenda();
+		this.tabelaItensVenda = new TabelaItensVenda("1");
 	}
 	
 	@Test
