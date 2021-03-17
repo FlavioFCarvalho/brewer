@@ -1,6 +1,5 @@
 package com.reobotnet.brewer.controller;
 
-
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +57,7 @@ public class VendasController {
 	private ModelAndView mvTabelaItensVenda(String uuid) {
 		ModelAndView mv = new ModelAndView("venda/TabelaItensVenda");
 		mv.addObject("itens", tabelaItens.getItens(uuid));
+		mv.addObject("valorTotal", tabelaItens.getValorTotal(uuid));
 		return mv;
 	}
 
