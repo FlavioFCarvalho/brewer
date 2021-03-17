@@ -5,6 +5,7 @@ Brewer.Venda = (function() {
 		this.valorTotalBox = $('.js-valor-total-box');
 		this.valorFreteInput = $('#valorFrete');
 		this.valorDescontoInput = $('#valorDesconto');
+		this.valorTotalBoxContainer = $('.js-valor-total-box-container');
 		
 		this.valorTotalItens = 0;
 		this.valorFrete = 0;
@@ -37,6 +38,7 @@ Brewer.Venda = (function() {
 		var valorTotal = this.valorTotalItens + this.valorFrete - this.valorDesconto;
 		this.valorTotalBox.html(Brewer.formatarMoeda(valorTotal));
 		
+		this.valorTotalBoxContainer.toggleClass('negativo', valorTotal < 0);
 	}
 	
 	return Venda;
