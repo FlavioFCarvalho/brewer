@@ -1,11 +1,17 @@
 package com.reobotnet.brewer.controller;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import com.reobotnet.brewer.controller.validator.VendaValidator;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.model.Venda;
 import com.reobotnet.brewer.repository.Cervejas;
@@ -34,16 +40,31 @@ public class VendasController {
 	@Autowired
 	private CadastroVendaService cadastroVendaService;
 	
+	@Autowired
+	private VendaValidator vendaValidator;
+	
+	@InitBinder
+	public void inicializarValidador(WebDataBinder binder) {
+		binder.setValidator(vendaValidator);
+	}
+	
 	@GetMapping("/nova")
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
-		venda.setUuid(UUID.randomUUID().toString());
+		
+		if (StringUtils.isEmpty(venda.getUuid())) {
+			venda.setUuid(UUID.randomUUID().toString());
+		}
 		return mv;
 	}
 	
 	@PostMapping("/nova")
-	public ModelAndView salvar(Venda venda, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+	public ModelAndView salvar(@Valid Venda venda,BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		venda.setUsuario(usuarioSistema.getUsuario());
+		
+		if(result.hasErrors()) {
+			return nova(venda);
+		}
 		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
 		
 		cadastroVendaService.salvar(venda);
