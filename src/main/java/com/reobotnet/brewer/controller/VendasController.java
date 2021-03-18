@@ -55,6 +55,9 @@ public class VendasController {
 		if (StringUtils.isEmpty(venda.getUuid())) {
 			venda.setUuid(UUID.randomUUID().toString());
 		}
+		
+		mv.addObject("itens", venda.getItens());
+		
 		return mv;
 	}
 	
