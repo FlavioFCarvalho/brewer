@@ -60,12 +60,15 @@ public class VendasController {
 	
 	@PostMapping("/nova")
 	public ModelAndView salvar(@Valid Venda venda,BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-		venda.setUsuario(usuarioSistema.getUsuario());
+		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
+		
+		vendaValidator.validate(venda, result);
 		
 		if(result.hasErrors()) {
 			return nova(venda);
 		}
-		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
+		
+		venda.setUsuario(usuarioSistema.getUsuario());
 		
 		cadastroVendaService.salvar(venda);
 		attributes.addFlashAttribute("mensagem", "Venda salva com sucesso");

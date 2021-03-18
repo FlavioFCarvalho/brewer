@@ -23,6 +23,7 @@ public class VendaValidator implements Validator {
 		
 		Venda venda = (Venda) target;
 		validarSeInformouApenasHorarioEntrega(errors, venda);
+		validarSeInformouItens(errors, venda);
 	
 	}
 	
@@ -31,4 +32,11 @@ public class VendaValidator implements Validator {
 			errors.rejectValue("dataEntrega", "", "Informe uma data da entrega para um horário");
 		}
 	}
+	
+	private void validarSeInformouItens(Errors errors, Venda venda) {
+		if (venda.getItens().isEmpty()) {
+			errors.reject("", "Adicione pelo menos uma cerveja na venda");
+		}
+	}
+
 }

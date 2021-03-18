@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -59,7 +60,7 @@ public class Venda {
 	private StatusVenda status = StatusVenda.ORCAMENTO;
 
 	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
-	private List<ItemVenda> itens;
+	private List<ItemVenda> itens = new ArrayList<ItemVenda>();
 
 	@Transient
 	private String uuid;
