@@ -21,5 +21,14 @@ public class VendaValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmpty(errors, "cliente.codigo", "", "Selecione um cliente na pesquisa rápida");
 		
+		Venda venda = (Venda) target;
+		validarSeInformouApenasHorarioEntrega(errors, venda);
+	
+	}
+	
+	private void validarSeInformouApenasHorarioEntrega(Errors errors, Venda venda) {
+		if (venda.getHorarioEntrega() != null && venda.getDataEntrega() == null) {
+			errors.rejectValue("dataEntrega", "", "Informe uma data da entrega para um horário");
+		}
 	}
 }
