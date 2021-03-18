@@ -24,18 +24,24 @@ public class VendaValidator implements Validator {
 		Venda venda = (Venda) target;
 		validarSeInformouApenasHorarioEntrega(errors, venda);
 		validarSeInformouItens(errors, venda);
-	
+		validarValorTotalNegativo(errors, venda);
 	}
-	
-	private void validarSeInformouApenasHorarioEntrega(Errors errors, Venda venda) {
-		if (venda.getHorarioEntrega() != null && venda.getDataEntrega() == null) {
-			errors.rejectValue("dataEntrega", "", "Informe uma data da entrega para um horário");
+
+	private void validarValorTotalNegativo(Errors errors, Venda venda) {
+		if (venda.getValorTotal().compareTo(BigDecimal.ZERO) < 0) {
+			errors.reject("", "Valor total não pode ser negativo");
 		}
 	}
-	
+
 	private void validarSeInformouItens(Errors errors, Venda venda) {
 		if (venda.getItens().isEmpty()) {
 			errors.reject("", "Adicione pelo menos uma cerveja na venda");
+		}
+	}
+
+	private void validarSeInformouApenasHorarioEntrega(Errors errors, Venda venda) {
+		if (venda.getHorarioEntrega() != null && venda.getDataEntrega() == null) {
+			errors.rejectValue("dataEntrega", "", "Informe uma data da entrega para um horário");
 		}
 	}
 

@@ -1,7 +1,6 @@
 package com.reobotnet.brewer.controller;
-import java.util.UUID;
 
-import javax.validation.Valid;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -57,17 +56,20 @@ public class VendasController {
 		}
 		
 		mv.addObject("itens", venda.getItens());
+		mv.addObject("valorFrete", venda.getValorFrete());
+		mv.addObject("valorDesconto", venda.getValorDesconto());
+		mv.addObject("valorTotalItens", tabelaItens.getValorTotal(venda.getUuid()));
 		
 		return mv;
 	}
 	
 	@PostMapping("/nova")
-	public ModelAndView salvar(@Valid Venda venda,BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
+	public ModelAndView salvar(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
 		venda.adicionarItens(tabelaItens.getItens(venda.getUuid()));
+		venda.calcularValorTotal();
 		
 		vendaValidator.validate(venda, result);
-		
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return nova(venda);
 		}
 		
