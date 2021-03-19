@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.reobotnet.brewer.model.Venda;
+import com.reobotnet.brewer.model.enuns.StatusVenda;
 import com.reobotnet.brewer.repository.Vendas;
 
 @Service
@@ -28,6 +29,12 @@ public class CadastroVendaService {
 		}
 		
 		vendas.save(venda);
+	}
+
+	@Transactional
+	public void emitir(Venda venda) {
+		venda.setStatus(StatusVenda.EMITIDA);
+		salvar(venda);
 	}
 
 }
