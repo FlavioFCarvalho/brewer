@@ -1,8 +1,9 @@
 package com.reobotnet.brewer.service.event.cerveja;
-
 import org.springframework.util.StringUtils;
 
 import com.reobotnet.brewer.model.Cerveja;
+
+
 
 public class CervejaSalvaEvent {
 
@@ -19,5 +20,9 @@ public class CervejaSalvaEvent {
 	public boolean temFoto() {
 		return !StringUtils.isEmpty(cerveja.getFoto());
 	}
+
+	public boolean isNovaFoto() {
+		return cerveja.isNovaFoto();
+	}
+}	
 	
-}
