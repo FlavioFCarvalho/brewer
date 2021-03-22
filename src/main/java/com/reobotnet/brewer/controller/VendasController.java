@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.reobotnet.brewer.controller.page.PageWrapper;
 import com.reobotnet.brewer.controller.validator.VendaValidator;
 import com.reobotnet.brewer.model.Cerveja;
+import com.reobotnet.brewer.model.ItemVenda;
 import com.reobotnet.brewer.model.TipoPessoa;
 import com.reobotnet.brewer.model.Venda;
 import com.reobotnet.brewer.model.enuns.StatusVenda;
@@ -54,6 +55,7 @@ public class VendasController {
 	@Autowired
 	private Vendas vendas;
 	
+		
 	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
@@ -63,9 +65,7 @@ public class VendasController {
 	public ModelAndView nova(Venda venda) {
 		ModelAndView mv = new ModelAndView("venda/CadastroVenda");
 		
-		if (StringUtils.isEmpty(venda.getUuid())) {
-			venda.setUuid(UUID.randomUUID().toString());
-		}
+		setUuid(venda);
 		
 		mv.addObject("itens", venda.getItens());
 		mv.addObject("valorFrete", venda.getValorFrete());
@@ -103,19 +103,7 @@ public class VendasController {
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
-	@PostMapping(value = "/nova", params = "enviarEmail")
-	public ModelAndView enviarEmail(Venda venda, BindingResult result, RedirectAttributes attributes, @AuthenticationPrincipal UsuarioSistema usuarioSistema) {
-		validarVenda(venda, result);
-		if (result.hasErrors()) {
-			return nova(venda);
-		}
-		
-		venda.setUsuario(usuarioSistema.getUsuario());
-		
-		cadastroVendaService.salvar(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salva e e-mail enviado");
-		return new ModelAndView("redirect:/vendas/nova");
-	}
+	
 	
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
@@ -140,7 +128,7 @@ public class VendasController {
 	
 	@GetMapping
 	public ModelAndView pesquisar(VendaFilter vendaFilter,
-			@PageableDefault(size = 3) Pageable pageable, HttpServletRequest httpServletRequest) {
+			@PageableDefault(size = 10) Pageable pageable, HttpServletRequest httpServletRequest) {
 		ModelAndView mv = new ModelAndView("/venda/PesquisaVendas");
 		mv.addObject("todosStatus", StatusVenda.values());
 		mv.addObject("tiposPessoa", TipoPessoa.values());
@@ -148,6 +136,20 @@ public class VendasController {
 		PageWrapper<Venda> paginaWrapper = new PageWrapper<>(vendas.filtrar(vendaFilter, pageable)
 				, httpServletRequest);
 		mv.addObject("pagina", paginaWrapper);
+		return mv;
+	}
+	
+	@GetMapping("/{codigo}")
+	public ModelAndView editar(@PathVariable Long codigo) {
+		Venda venda = vendas.buscarComItens(codigo);
+		
+		setUuid(venda);
+		for (ItemVenda item : venda.getItens()) {
+			tabelaItens.adicionarItem(venda.getUuid(), item.getCerveja(), item.getQuantidade());
+		}
+		
+		ModelAndView mv = nova(venda);
+		mv.addObject(venda);
 		return mv;
 	}
 	
@@ -163,6 +165,12 @@ public class VendasController {
 		venda.calcularValorTotal();
 		
 		vendaValidator.validate(venda, result);
+	}
+	
+	private void setUuid(Venda venda) {
+		if (StringUtils.isEmpty(venda.getUuid())) {
+			venda.setUuid(UUID.randomUUID().toString());
+		}
 	}
 
 }
