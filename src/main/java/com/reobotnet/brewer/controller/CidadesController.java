@@ -11,11 +11,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +32,7 @@ import com.reobotnet.brewer.repository.Cidades;
 import com.reobotnet.brewer.repository.Estados;
 import com.reobotnet.brewer.repository.filter.CidadeFilter;
 import com.reobotnet.brewer.service.CadastroCidadeService;
+import com.reobotnet.brewer.service.exception.ImpossivelExcluirEntidadeException;
 import com.reobotnet.brewer.service.exception.NomeCidadeJaCadastradaException;
 
 @Controller
@@ -42,7 +48,7 @@ public class CidadesController {
 	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
 	
-	@RequestMapping("/nova")
+	@GetMapping("/nova")
 	public ModelAndView nova(Cidade cidade) {
 		ModelAndView mv = new ModelAndView("cidade/CadastroCidade");
 		mv.addObject("estados", estados.findAll());
@@ -50,7 +56,7 @@ public class CidadesController {
 	}
 	
 	@Cacheable(value = "cidades", key = "#codigoEstado")
-	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	public @ResponseBody List<Cidade> pesquisarPorCodigoEstado(
 			@RequestParam(name = "estado", defaultValue = "-1") Long codigoEstado) {
 		try {
@@ -58,10 +64,10 @@ public class CidadesController {
 		} catch (InterruptedException e) {	}
 		return cidades.findByEstadoCodigo(codigoEstado);
 	}
-	
-	@PostMapping("/nova")
+
+	@PostMapping({"/nova", "/nova/{codgo}"})
 	@CacheEvict(value = "cidades", key = "#cidade.estado.codigo", condition = "#cidade.temEstado()")
-	public ModelAndView salvar(@Valid Cidade cidade, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView salvar(@Valid Cidade cidade, Model model, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return nova(cidade);
 		}
@@ -88,5 +94,21 @@ public class CidadesController {
 		mv.addObject("pagina", paginaWrapper);
 		return mv;
 	}
+
+	@DeleteMapping("/{codigo}")
+	public ResponseEntity<?> excluir(@PathVariable("codigo") Cidade cidade) {
+		try {
+			this.cadastroCidadeService.excluir(cidade);
+		} catch (ImpossivelExcluirEntidadeException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		return ResponseEntity.ok().build();
+	}
 	
+	@GetMapping("/{codigo}")
+	public ModelAndView atualizar(@PathVariable("codigo") Cidade cidade) {
+		ModelAndView mv = this.nova(cidade);
+		mv.addObject(this.cidades.findByCodigoFetchingEstado(cidade.getCodigo()));
+		return mv;
+	}
 }
