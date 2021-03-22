@@ -23,7 +23,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.reobotnet.brewer.controller.page.PageWrapper;
 import com.reobotnet.brewer.model.Estilo;
-import com.reobotnet.brewer.model.Usuario;
 import com.reobotnet.brewer.repository.Estilos;
 import com.reobotnet.brewer.repository.filter.EstiloFilter;
 import com.reobotnet.brewer.service.CadastroEstiloService;

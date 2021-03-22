@@ -15,11 +15,11 @@
 	<div class="page-header">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-10">
+				<div class="col-xs-10">
 					<h1>Pesquisa de clientes</h1>
 				</div>
 				
-				<div class="col-sm-2">
+				<div class="col-xs-2">
 					<div class="aw-page-header-controls">
 						<a class="btn  btn-default" th:href="@{/clientes/novo}">
 							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Novo cliente</span>
@@ -72,10 +72,13 @@
 						<td class="text-right" th:text="${cliente.telefone}">(11) 99999-9999</td>
 						<td class="text-right" th:text="${cliente.endereco.nomeCidadeSiglaEstado}"></td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs" title="Editar"> 
+							<a class="btn  btn-link  btn-xs" title="Editar"
+								th:href="@{/clientes/{codigo}(codigo=${cliente.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs" title="Excluir">
+							<a class="btn  btn-link  btn-xs  js-exclusao-btn" title="Excluir"
+								data:url="@{/clientes/{codigo}(codigo=${cliente.codigo})}"
+								data:objeto="${cliente.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>
@@ -87,24 +90,7 @@
 			</table>
 		</div>
 		
-		<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
-			<nav>
-				<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
-					<li th:class="${pagina.primeira} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
-					</li>
-					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
-						<li th:class="${paginaAtual == numeroPagina} ? active">
-							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
-						</li>
-					</th:block>
-					
-					<li th:class="${pagina.ultima} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+		<brewer:pagination page="${pagina}"/>
 		
 	</div>
 </section>
