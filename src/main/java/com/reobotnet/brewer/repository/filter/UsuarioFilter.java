@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.reobotnet.brewer.model.Grupo;
 
-
-
 public class UsuarioFilter {
 
 	private String nome;
