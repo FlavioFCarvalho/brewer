@@ -2,7 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="'layout/LayoutPadrao'"
+	layout:decorate="~{layout/LayoutPadrao}"
 	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
@@ -58,10 +58,13 @@
 						<td class="text-center" th:text="${estilo.codigo}">1</td>
 						<td th:text="${estilo.nome}">Pale Lager</td>
 						<td class="text-center">
-							<a class="btn  btn-link  btn-xs" title="Editar"> 
+							<a class="btn  btn-link  btn-xs" title="Editar"
+								th:href="@{/estilos/{codigo}(codigo=${estilo.codigo})}"> 
 								<i class="glyphicon glyphicon-pencil"></i>
 							</a>
-							<a class="btn  btn-link  btn-xs" title="Excluir">
+							<a class="btn  btn-link  btn-xs js-exclusao-btn" title="Excluir"
+									data:url="@{/estilos/{codigo}(codigo=${estilo.codigo})}"
+									data:objeto="${estilo.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
 							</a>
 						</td>
@@ -73,24 +76,7 @@
 			</table>
 		</div>
 		
-		<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
-			<nav>
-				<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
-					<li th:class="${pagina.primeira} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
-					</li>
-					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
-						<li th:class="${paginaAtual == numeroPagina} ? active">
-							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
-						</li>
-					</th:block>
-					
-					<li th:class="${pagina.ultima} ? disabled">
-						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
-					</li>
-				</ul>
-			</nav>
-		</div>
+		<brewer:pagination page="${pagina}"/>
 		
 	</div>
 
