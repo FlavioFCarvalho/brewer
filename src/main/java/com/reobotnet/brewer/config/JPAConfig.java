@@ -23,8 +23,8 @@ import com.reobotnet.brewer.repository.Cervejas;
 @ComponentScan(basePackageClasses = Cervejas.class)
 @EnableJpaRepositories(basePackageClasses = Cervejas.class, enableDefaultTransactions = false)
 @EnableTransactionManagement
+@ComponentScan(basePackageClasses = Cervejas.class)
 public class JPAConfig {
-
 
 	@Bean
 	public DataSource dataSource() {
@@ -49,6 +49,7 @@ public class JPAConfig {
 		factory.setDataSource(dataSource);
 		factory.setJpaVendorAdapter(jpaVendorAdapter);
 		factory.setPackagesToScan(Cerveja.class.getPackage().getName());
+		factory.setMappingResources("sql/consultas-nativas.xml");
 		factory.afterPropertiesSet();
 		return factory.getObject();
 	}

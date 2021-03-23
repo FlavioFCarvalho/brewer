@@ -1,5 +1,6 @@
 package com.reobotnet.brewer.controller;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +21,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import com.reobotnet.brewer.controller.page.PageWrapper;
 import com.reobotnet.brewer.controller.validator.VendaValidator;
+import com.reobotnet.brewer.dto.VendaMes;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.model.ItemVenda;
 import com.reobotnet.brewer.model.TipoPessoa;
@@ -57,7 +60,7 @@ public class VendasController {
 	@Autowired
 	private Vendas vendas;
 	
-	
+		
 	@InitBinder("venda")
 	public void inicializarValidador(WebDataBinder binder) {
 		binder.setValidator(vendaValidator);
@@ -105,8 +108,7 @@ public class VendasController {
 		return new ModelAndView("redirect:/vendas/nova");
 	}
 	
-	
-	
+		
 	@PostMapping("/item")
 	public ModelAndView adicionarItem(Long codigoCerveja, String uuid) {
 		Cerveja cerveja = cervejas.findOne(codigoCerveja);
@@ -166,6 +168,11 @@ public class VendasController {
 		
 		attributes.addFlashAttribute("mensagem", "Venda cancelada com sucesso");
 		return new ModelAndView("redirect:/vendas/" + venda.getCodigo());
+	}
+	
+	@GetMapping("/totalPorMes")
+	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
+		return vendas.totalPorMes();
 	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
