@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.reobotnet.brewer.repository.Cervejas;
 import com.reobotnet.brewer.repository.Clientes;
 import com.reobotnet.brewer.repository.Vendas;
 
@@ -13,6 +14,9 @@ public class DashboardController {
 	
 	@Autowired
 	private Vendas vendas;
+	
+	@Autowired
+	private Cervejas cervejas;
 	
 	@Autowired
 	private Clientes clientes;
@@ -26,6 +30,7 @@ public class DashboardController {
 		mv.addObject("ticketMedio", vendas.valorTicketMedioNoAno());
 		
 		mv.addObject("totalClientes", clientes.count());
+		mv.addObject("valorItensEstoque", cervejas.valorItensEstoque());
 		
 		return mv;
 	}
