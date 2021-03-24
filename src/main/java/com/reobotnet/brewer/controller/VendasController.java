@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 import com.reobotnet.brewer.controller.page.PageWrapper;
 import com.reobotnet.brewer.controller.validator.VendaValidator;
 import com.reobotnet.brewer.dto.VendaMes;
+import com.reobotnet.brewer.dto.VendaOrigem;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.model.ItemVenda;
 import com.reobotnet.brewer.model.TipoPessoa;
@@ -173,6 +173,11 @@ public class VendasController {
 	@GetMapping("/totalPorMes")
 	public @ResponseBody List<VendaMes> listarTotalVendaPorMes() {
 		return vendas.totalPorMes();
+	}
+	
+	@GetMapping("/porOrigem")
+	public @ResponseBody List<VendaOrigem> vendasPorNacionalidade() {
+		return this.vendas.totalPorOrigem();
 	}
 	
 	private ModelAndView mvTabelaItensVenda(String uuid) {
