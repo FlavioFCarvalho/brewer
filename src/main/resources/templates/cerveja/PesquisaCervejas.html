@@ -2,7 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/LayoutPadrao}"
+	layout:decorator="'layout/LayoutPadrao'"
 	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
@@ -14,13 +14,13 @@
 	<div class="page-header">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-10">
+				<div class="col-sm-10">
 					<h1>Pesquisa de cervejas</h1>
 				</div>
 				
-				<div class="col-xs-2">
+				<div class="col-sm-2">
 					<div class="aw-page-header-controls">
-						<a class="btn  btn-default" th:href="@{/cervejas/nova}">
+						<a class="btn  btn-default" th:href="@{/cervejas/novo}">
 							<i class="glyphicon  glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Nova cerveja</span>
 						</a>
 					</div>
@@ -97,10 +97,22 @@
 					<tr>
 						<th class="table-cervejas-col-foto"></th>
 						<th class="table-cervejas-col-sku">
-							<brewer:order page="${pagina}" field="sku" text="SKU"/>
+							<a th:href="${pagina.urlOrdenada('sku')}" th:remove="${pagina.vazia} ? tag">
+								<span>SKU</span>
+								<span class="dropup" th:remove="${pagina.descendente('sku')} ? tag"
+										th:if="${pagina.ordenada('sku')}">
+									<span class="caret"></span>
+								</span>
+							</a>
 						</th>
 						<th class="table-cervejas-col-nome">
-							<brewer:order page="${pagina}" field="nome" text="Nome"/>
+							<a th:href="${pagina.urlOrdenada('nome')}" th:remove="${pagina.vazia} ? tag">
+								<span>Nome</span>
+								<span class="dropup" th:remove="${pagina.descendente('nome')} ? tag"
+										th:if="${pagina.ordenada('nome')}">
+									<span class="caret"></span>
+								</span>
+							</a>
 						</th>
 						<th class="table-cervejas-col-estilo">Estilo</th>
 						<th class="table-cervejas-col-origem">Origem</th>
@@ -121,14 +133,14 @@
 						<td class="text-right" th:text="|R$ ${cerveja.valor}|">R$ 8.00</td>
 						<td class="text-center">
 							<a class="btn  btn-link  btn-xs  js-tooltip" title="Editar" 
-									th:href="@{/cervejas/{codigo}(codigo=${cerveja.codigo})}"> 
+								th:href="@{/cervejas/{codigo}(codigo=${cerveja.codigo})}"> 								
 								<i class="glyphicon glyphicon-pencil"></i>
-							</a>
-							<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
-									data:url="@{/cervejas/{codigo}(codigo=${cerveja.codigo})}"
-									data:objeto="${cerveja.nome}">
+ 							</a>
+						<a class="btn  btn-link  btn-xs  js-tooltip  js-exclusao-btn" title="Excluir" href="#" 
+								data:url="@{/cervejas/{codigo}(codigo=${cerveja.codigo})}"
+								data:objeto="${cerveja.nome}">
 								<i class="glyphicon glyphicon-remove"></i>
-							</a>
+ 							</a>
 						</td>
 					</tr>
 					<tr th:if="${pagina.vazia}">
@@ -138,7 +150,24 @@
 			</table>
 		</div>
 		
-		<brewer:pagination page="${pagina}"/>
+		<div class="col-sm-12  text-center" th:if="${not pagina.vazia}">
+			<nav>
+				<ul class="pagination  pagination-sm" th:with="paginaAtual=${pagina.atual}">
+					<li th:class="${pagina.primeira} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual - 1)}" th:remove="${pagina.primeira} ? tag"><span>&laquo;</span></a>
+					</li>
+					<th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina=${p - 1}">
+						<li th:class="${paginaAtual == numeroPagina} ? active">
+							<a th:href="${pagina.urlParaPagina(numeroPagina)}">[[${p}]]</a>
+						</li>
+					</th:block>
+					
+					<li th:class="${pagina.ultima} ? disabled">
+						<a th:href="${pagina.urlParaPagina(paginaAtual + 1)}" th:remove="${pagina.ultima} ? tag"><span>&raquo;</span></a>
+					</li>
+				</ul>
+			</nav>
+		</div>
 		
 	</div>
 
