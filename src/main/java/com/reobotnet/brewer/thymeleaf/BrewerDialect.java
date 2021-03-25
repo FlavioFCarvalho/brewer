@@ -11,6 +11,7 @@ import com.reobotnet.brewer.thymeleaf.processor.ClassForErrorAttributeTagProcess
 import com.reobotnet.brewer.thymeleaf.processor.MenuAttributeTagProcessor;
 import com.reobotnet.brewer.thymeleaf.processor.MessageElementTagProcessor;
 import com.reobotnet.brewer.thymeleaf.processor.OrderElementTagProcessor;
+import com.reobotnet.brewer.thymeleaf.processor.PaginationElementTagProcessor;
 
 public class BrewerDialect extends AbstractProcessorDialect {
 
@@ -25,6 +26,7 @@ public class BrewerDialect extends AbstractProcessorDialect {
 		processadores.add(new MessageElementTagProcessor(dialectPrefix));
 		processadores.add(new MenuAttributeTagProcessor(dialectPrefix));
 		processadores.add(new OrderElementTagProcessor(dialectPrefix));
+		processadores.add(new PaginationElementTagProcessor(dialectPrefix));
 		return processadores;
 	}
 
