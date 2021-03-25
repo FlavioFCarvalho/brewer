@@ -10,6 +10,7 @@ import org.thymeleaf.standard.StandardDialect;
 import com.reobotnet.brewer.thymeleaf.processor.ClassForErrorAttributeTagProcessor;
 import com.reobotnet.brewer.thymeleaf.processor.MenuAttributeTagProcessor;
 import com.reobotnet.brewer.thymeleaf.processor.MessageElementTagProcessor;
+import com.reobotnet.brewer.thymeleaf.processor.OrderElementTagProcessor;
 
 public class BrewerDialect extends AbstractProcessorDialect {
 
@@ -23,6 +24,7 @@ public class BrewerDialect extends AbstractProcessorDialect {
 		processadores.add(new ClassForErrorAttributeTagProcessor(dialectPrefix));
 		processadores.add(new MessageElementTagProcessor(dialectPrefix));
 		processadores.add(new MenuAttributeTagProcessor(dialectPrefix));
+		processadores.add(new OrderElementTagProcessor(dialectPrefix));
 		return processadores;
 	}
 
