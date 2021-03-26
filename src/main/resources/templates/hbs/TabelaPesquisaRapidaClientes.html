@@ -4,6 +4,7 @@
 		<thead>
 			<tr>
 				<th class="col-sm-2">Nome</th>
+                <th class="col-sm-2">CPF/CNPJ</th>
 				<th class="col-sm-2">Telefone</th>
 			</tr>
 		</thead>
@@ -13,6 +14,7 @@
 				{{#each .}}
 					<tr data-codigo="{{codigo}}" data-nome="{{nome}}" class="js-cliente-pesquisa-rapida">
 						<td>{{nome}}</td>
+                        <td>{{cpfOuCnpj}}</td>
 						<td>{{telefone}}</td>
  					</tr>
 				{{/each}}
