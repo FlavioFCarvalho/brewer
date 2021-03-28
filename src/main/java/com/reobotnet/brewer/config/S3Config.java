@@ -13,7 +13,7 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-
+/*
 @Configuration
 @PropertySource(value = { "file://${HOME}/.brewer-s3.properties" }, ignoreResourceNotFound = true)
 public class S3Config {
@@ -32,3 +32,4 @@ public class S3Config {
 	}
 	
 }
+*/
