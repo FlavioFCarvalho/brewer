@@ -22,6 +22,7 @@ import com.reobotnet.brewer.dto.ValorItensEstoque;
 import com.reobotnet.brewer.model.Cerveja;
 import com.reobotnet.brewer.repository.filter.CervejaFilter;
 import com.reobotnet.brewer.repository.paginacao.PaginacaoUtil;
+import com.reobotnet.brewer.storage.FotoStorage;
 
 public class CervejasImpl implements CervejasQueries {
 
@@ -30,6 +31,9 @@ public class CervejasImpl implements CervejasQueries {
 	
 	@Autowired
 	private PaginacaoUtil paginacaoUtil;
+	
+	@Autowired
+	private FotoStorage fotoStorage;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -44,10 +48,22 @@ public class CervejasImpl implements CervejasQueries {
 	}
 	
 	@Override
+	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
+		String jpql = "select new com.reobotnet.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
+				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
+		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
+					.setParameter("skuOuNome", skuOuNome + "%")
+					.getResultList();
+		cervejasFiltradas.forEach(c -> c.setUrlThumbnailFoto(fotoStorage.getUrl(FotoStorage.THUMBNAIL_PREFIX + c.getFoto())));
+		return cervejasFiltradas;
+	}
+	
+	@Override
 	public ValorItensEstoque valorItensEstoque() {
-		String query = "select new com.reobotnet.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		String query = "select new com.algaworks.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
 		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
+	
 	private Long total(CervejaFilter filtro) {
 		Criteria criteria = manager.unwrap(Session.class).createCriteria(Cerveja.class);
 		adicionarFiltro(filtro, criteria);
@@ -91,13 +107,4 @@ public class CervejasImpl implements CervejasQueries {
 		return filtro.getEstilo() != null && filtro.getEstilo().getCodigo() != null;
 	}
 
-	@Override
-	public List<CervejaDTO> porSkuOuNome(String skuOuNome) {
-		String jpql = "select new com.reobotnet.brewer.dto.CervejaDTO(codigo, sku, nome, origem, valor, foto) "
-				+ "from Cerveja where lower(sku) like lower(:skuOuNome) or lower(nome) like lower(:skuOuNome)";
-		List<CervejaDTO> cervejasFiltradas = manager.createQuery(jpql, CervejaDTO.class)
-					.setParameter("skuOuNome", skuOuNome + "%")
-					.getResultList();
-		return cervejasFiltradas;
-	}
 }

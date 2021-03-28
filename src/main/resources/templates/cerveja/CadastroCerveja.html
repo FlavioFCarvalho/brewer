@@ -2,7 +2,7 @@
 <html lang="pt" xmlns="http://www.w3.org/1999/xhtml" 
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="layout/LayoutPadrao"
+	layout:decorate="~{layout/LayoutPadrao}"
 	xmlns:brewer="http://brewer.algaworks.com">
 	
 <head>
@@ -132,6 +132,7 @@
 					<input type="hidden" th:field="*{foto}">
 					<input type="hidden" th:field="*{contentType}">
 					<input type="hidden" th:field="*{novaFoto}">
+					<input type="hidden" th:field="*{urlFoto}">
 				
 					<label class="control-label">Foto</label>
 					

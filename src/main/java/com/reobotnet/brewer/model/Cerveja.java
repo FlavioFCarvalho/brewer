@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -27,8 +28,10 @@ import org.springframework.util.StringUtils;
 
 import com.reobotnet.brewer.model.enuns.Origem;
 import com.reobotnet.brewer.model.enuns.Sabor;
+import com.reobotnet.brewer.repository.listener.CervejaEntityListener;
 import com.reobotnet.brewer.validation.SKU;
 
+@EntityListeners(CervejaEntityListener.class)
 @Entity
 @Table(name = "cerveja")
 public class Cerveja implements Serializable {
@@ -40,10 +43,10 @@ public class Cerveja implements Serializable {
 	private Long codigo;
 
 	@SKU
-	@NotBlank(message = "SKU é obrigatório")
+	@NotBlank
 	private String sku;
 
-	@NotBlank(message = "Nome é obrigatório")
+	@NotBlank
 	private String nome;
 
 	@NotBlank(message = "A descrição é obrigatória")
@@ -90,12 +93,18 @@ public class Cerveja implements Serializable {
 	@Transient
 	private boolean novaFoto;
 
+	@Transient
+	private String urlFoto;
+
+	@Transient
+	private String urlThumbnailFoto;
+
 	@PrePersist
 	@PreUpdate
 	private void prePersistUpdate() {
 		sku = sku.toUpperCase();
 	}
-
+	
 	public String getSku() {
 		return sku;
 	}
@@ -218,6 +227,22 @@ public class Cerveja implements Serializable {
 
 	public void setNovaFoto(boolean novaFoto) {
 		this.novaFoto = novaFoto;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public String getUrlThumbnailFoto() {
+		return urlThumbnailFoto;
+	}
+
+	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
+		this.urlThumbnailFoto = urlThumbnailFoto;
 	}
 
 	@Override
