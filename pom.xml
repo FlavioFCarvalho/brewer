@@ -71,6 +71,9 @@
 		<!-- JUnit -->
 		<junit.version>4.13.2</junit.version>
 		
+		<!-- AWS SDK - S3 -->
+		<aws-java-sdk-s3.version>1.10.77</aws-java-sdk-s3.version>
+		
 		
 	</properties>
 
@@ -289,6 +292,13 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 	   </dependency>
+	   
+	   <!-- AWS SDK - S3 -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>${aws-java-sdk-s3.version}</version>
+		</dependency>
 		
 	</dependencies>
 	
