@@ -138,6 +138,7 @@
 					
 					<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
 						<div id="upload-drop" class="bw-upload">
+							<img th:src="@{/images/mini-loading.gif}" class="js-img-loading  hidden"/>
 							<i class="glyphicon  glyphicon-cloud-upload"></i>
 							<span>Arraste a foto aqui ou </span>
 							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>

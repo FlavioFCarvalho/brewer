@@ -60,7 +60,7 @@ public class CervejasImpl implements CervejasQueries {
 	
 	@Override
 	public ValorItensEstoque valorItensEstoque() {
-		String query = "select new com.algaworks.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
+		String query = "select new com.reobotnet.brewer.dto.ValorItensEstoque(sum(valor * quantidadeEstoque), sum(quantidadeEstoque)) from Cerveja";
 		return manager.createQuery(query, ValorItensEstoque.class).getSingleResult();
 	}
 	
